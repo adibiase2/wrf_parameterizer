@@ -1,0 +1,152 @@
+Parameterizer v. 2.7
+
+
+by Tony DiBiase, Duke University
+
+
+
+#########################
+Introduction
+#########################
+
+
+
+Howdy.  The Weather and Research Forecasting (WRF) model is a mesoscale weather forecasting tool developed by NCAR.  
+It has been adapted to add a wildfire modeling component, integrating dynamic wind patterns to fire behavior.  
+This tool is the first of several developed as a 'WRF Enhancement Suite', a toolkit designed to make running 
+and visualizing the model significantly easier for users.  
+
+This tool is designed to optimize the preprocessing 
+of the WRF model, which usually requires a slightly obtuse method of defining a series of domains in a bash 'name list' .
+  Using geospatial technology greatly improves the process, and allows a user to actually visualize where the model is running.  
+This 'parameterizer' tool can be used to quickly and easily develop a name list.wps that can easily be input into the WRF 
+Preprocessing Suite.
+
+The tool takes the form of a .esriaddin file, which can be imported to ESRI ArcMap v10 in seconds, 
+ready to use.
+
+
+
+##########################
+Usage
+##########################
+
+
+
+The parameterizer toolkit was developed to be easy to use, and actually requires no data to use.
+
+Here is the general 
+workflow of the process, followed by a detailed step-by-step guide:
+
+Select data resolution -> create a domain -> 
+iterate until all domains are made -> define nesting attributes -> select geographic data -> select output location ->
+ print out the name list
+
+
+
+
+1) First select the resolution of the first domain (in terms of m^2) in the 'Set Domain Resolution' 
+box. You can choose one of the selections or choose your own resolution.  
+        
+ ***As a caveat: the resolution should be an integer value, and should probably be divisible by        
+          
+ten (like 9000, 3000, etc.)
+
+
+
+2) Load a baseman from ESRI.  You can also use your own map, as long as it's in a projected coordinate system. 
+
+
+ 
+3) Click the 'create domain' button and drag your cursor to create a domain.  You will be prompted to save it 
+(for instance, as 'domain.img'
+
+
+
+4) Keep on defining domains until you're bored (or your study area is appropriately covered at all the scales you want).   
+You can change the domain resolution for each successive domain (to keep the WRF gods happy, the nest resolution should 
+be a ratio of either 3 or 5 to the parent (so from 3000 to 1000, or 600).
+
+
+
+5) After all your domains are created, calculate the nest attributes by clicking the 'calculate nest' button.  
+This is easier than it sounds.  Just click the 'calculate nest' button and you'll be prompted to select FIRST the 
+master domain (the first domain that contains all the others), and then a nest.   Click the button again until all 
+domains are added to the list.  
+      **again: select the MASTER and then each nest, each time selecting first the 
+master domain and then each separate nest IN ORDER of nesting.  So you'd first select the master, then a nest, then
+ repeat the process selecting a different nest each time.
+     
+
+NOTE: as each nest is added, the tool will print out the nest attributes in the python interpreter in ArcGIS
+
+
+
+6) Click the buttons defining the location of the static geographic data (in WRF this would be .../WPS/geog,  but 
+in this context just choose a directory).   
+
+7) Also click the button to choose a location for your namelist.wps to be print out
+
+
+
+8) Select the number of domains you've included/created using the 'Number of Domains' option.
+
+
+
+8) Now that your domains are created and input into the function, you can now print out the name list (it will be saved 
+in your selected output directory). So- this is pretty easy.  For each domain you have, you'll be prompted to select 
+the 'parent' and 'nest'- just select those in order.  The name list will be saved to your desired directory.  
+   
+ ***So this is different than what you do in #5.  Here, starting with the master, you want to select each parent, 
+and then the nest.  Then for the next iteration, the 'nest' becomes the parent for the next nest.  
+In this way, you'll basically select the all domains in order
+
+
+
+
+###############################
+Examples
+###############################
+
+
+So - let's just make a fake scenario for fun to show how this thing works.
+
+Say you make four domains (at 9000, 3000, 1000, 
+and 200 meters in resolution). Say these are called 1, 2, 3, and 4.
+
+So for the NEST ATTRIBUTE button, you'd select things 
+in this order:
+------> 1, 2 then 1, 3 then 1, 4
+
+
+This is really just a fancy way of appending the attributes of the nests to a list.
+
+For the PRINT FINAL button, you'd select 
+things in THIS order:
+------> 1, 2 THEN 2, 3 THEN 3, 4
+
+Because this case allows for relative ratios and other fun stuff to be
+ calculated.
+
+Hope that makes it easier to figure it out!
+
+
+
+
+#############################
+Acknowledgments 
+#############################
+
+
+
+Thank you to John Fay at Duke for all the conceptual help and helping with the numerous bugs.
+
+
+Thanks for Rama Nemani and the team over at NASA Ames for helping me learn this crazy bitch of an atmospheric model.
+
+
+Thanks for Dr. Jennifer Swenson for keeping me enthusiastic and preventing me from going insane.
+
+
+And yeah - thanks to StackOverflow and GIS StackExchange for helping field some wonderful technical questions 
+about object-oriented programming.
